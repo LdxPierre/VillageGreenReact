@@ -1,12 +1,16 @@
-import './App.css'
+import Aside from "./layouts/Aside";
+import Body from "./layouts/Body";
+import Header from "./layouts/Header";
 
 function App() {
-  return (
-    <>
-    <h1>Hello World</h1>
-    <p>Ceci est le début de l'application React pour le projet back office de VillageGreen</p>
-    </>
-  )
+	return (
+		<div className="d-flex flex-column vh-100">
+			<Header></Header>
+			<Body>
+				<Aside></Aside>
+			</Body>
+		</div>
+	);
 }
 
-export default App
+export default App;
