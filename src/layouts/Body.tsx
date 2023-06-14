@@ -1,9 +1,9 @@
 type Props = {
-	children: JSX.Element;
+  children: JSX.Element;
 };
 
 const Body = ({ children }: Props): JSX.Element => {
-	return <main className="">{children}</main>;
+  return <></>;
 };
 
 export default Body;
