@@ -466,11 +466,6 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.42.0.tgz"
   integrity sha512-6SWlXpWU5AvId8Ac7zjzmIOqMOba/JWY8XZ4A7q7Gn1Vlfg/SFFIlrtHXt9nPn4op9ZPAkl91Jao+QQv3r/ukw==
 
-"@fontsource/public-sans@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@fontsource/public-sans/-/public-sans-5.0.3.tgz#483c13f0ba320ec570d4161495a28c7f1bfaba6a"
-  integrity sha512-qoP6K/rmKIe6TP31kV9ImR73u/R1opPA3sx+4NLH4wQWbxTOQNLbH9nDzKF2PN7IQ9xLpu5e6XnQLgwlPpjeTQ==
-
 "@fontsource/roboto@^5.0.3":
   version "5.0.3"
   resolved "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.0.3.tgz"
@@ -557,41 +552,6 @@
   integrity sha512-oKkx9z9Kwg40NtcIajF9uOXhxiyTZrrm9nmIJ4UjkU2IdHpd4QVLbCc/5hZN/y0C6qzi2Zlxyr9TGddQx2vx2A==
   dependencies:
     "@babel/runtime" "^7.21.0"
-
-"@mui/joy@^5.0.0-alpha.84":
-  version "5.0.0-alpha.84"
-  resolved "https://registry.yarnpkg.com/@mui/joy/-/joy-5.0.0-alpha.84.tgz#c7d06d625438fdc4b8bd7e0fe4135aa4a1caa1ad"
-  integrity sha512-sBPBtjmn5q7PCJLTKiwP64Im0shA473hY62fBy6PbZ4J3lhHh548pKDleuGiUXKpELG3eQiD6UDwSUEP8T4yIg==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
-    "@mui/base" "5.0.0-beta.4"
-    "@mui/core-downloads-tracker" "^5.13.4"
-    "@mui/system" "^5.13.5"
-    "@mui/types" "^7.2.4"
-    "@mui/utils" "^5.13.1"
-    clsx "^1.2.1"
-    csstype "^3.1.2"
-    prop-types "^15.8.1"
-    react-is "^18.2.0"
-
-"@mui/material-next@^6.0.0-alpha.89":
-  version "6.0.0-alpha.89"
-  resolved "https://registry.npmjs.org/@mui/material-next/-/material-next-6.0.0-alpha.89.tgz"
-  integrity sha512-2sFc3mlaeEv0K+RAJGrez8kLt7TswlRZTMiAA+f14amcHDTkSfcEFp2zVwLd1IaIVjjmU1mftQ2iDIYQC1sO5g==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
-    "@mui/base" "5.0.0-beta.4"
-    "@mui/material" "^5.13.5"
-    "@mui/system" "^5.13.5"
-    "@mui/types" "^7.2.4"
-    "@mui/utils" "^5.13.1"
-    "@popperjs/core" "^2.11.8"
-    "@types/react-transition-group" "^4.4.6"
-    clsx "^1.2.1"
-    csstype "^3.1.2"
-    prop-types "^15.8.1"
-    react-is "^18.2.0"
-    react-transition-group "^4.4.5"
 
 "@mui/material@^5.13.5":
   version "5.13.5"
