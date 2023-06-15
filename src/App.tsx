@@ -13,9 +13,7 @@ function App() {
 			<Box sx={{ display: "flex" }}>
 				<Header width={drawerWidth} />
 				<Aside width={drawerWidth}></Aside>
-				<Box
-					component={"main"}
-					sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}>
+				<Box component={"main"} sx={{ flexGrow: 1, p: 3 }}>
 					<Toolbar />
 				</Box>
 			</Box>

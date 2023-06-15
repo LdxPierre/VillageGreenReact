@@ -14,6 +14,13 @@ type Props = {
 	width: Number;
 };
 
+const links: string[][] = [
+	["Tableau de bord", "link", "Home"],
+	["Catalogue", "link", "Inventory"],
+	["Clients", "link", "Person"],
+	["Commandes", "link", "ShoppingBag"],
+];
+
 const Aside = ({ width }: Props): JSX.Element => {
 	return (
 		<Drawer
@@ -24,41 +31,19 @@ const Aside = ({ width }: Props): JSX.Element => {
 			}}
 			variant="permanent"
 			anchor="left">
-			<Toolbar></Toolbar>
-			<Divider></Divider>
+			<Toolbar />
+			<Divider />
 			<List>
-				<ListItem disablePadding>
-					<ListItemButton>
-						<ListItemIcon>
-							<Home></Home>
-						</ListItemIcon>
-						<ListItemText primary="Accueil"></ListItemText>
-					</ListItemButton>
-				</ListItem>
-				<ListItem disablePadding>
-					<ListItemButton>
-						<ListItemIcon>
-							<Inventory></Inventory>
-						</ListItemIcon>
-						<ListItemText primary="Catalogue"></ListItemText>
-					</ListItemButton>
-				</ListItem>
-				<ListItem disablePadding>
-					<ListItemButton>
-						<ListItemIcon>
-							<Person></Person>
-						</ListItemIcon>
-						<ListItemText primary="Clients"></ListItemText>
-					</ListItemButton>
-				</ListItem>
-				<ListItem disablePadding>
-					<ListItemButton>
-						<ListItemIcon>
-							<ShoppingBag></ShoppingBag>
-						</ListItemIcon>
-						<ListItemText primary="Commandes"></ListItemText>
-					</ListItemButton>
-				</ListItem>
+				{links.map((link, index) => (
+					<ListItem key={index} disablePadding>
+						<ListItemButton>
+							<ListItemIcon>
+								<Home color="primary" />
+							</ListItemIcon>
+							<ListItemText primary={link[0]}></ListItemText>
+						</ListItemButton>
+					</ListItem>
+				))}
 			</List>
 		</Drawer>
 	);

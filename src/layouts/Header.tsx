@@ -7,8 +7,9 @@ import {
 	Tooltip,
 	Menu,
 	MenuItem,
+	Avatar,
 } from "@mui/material";
-import { AccountCircle, Notifications } from "@mui/icons-material";
+import { Notifications } from "@mui/icons-material";
 import React from "react";
 
 type Props = {
@@ -41,18 +42,18 @@ function Header({ width }: Props): JSX.Element {
 				</Box>
 				<Box sx={{ flexGrow: 0 }}>
 					<Tooltip title="Notification">
-						<IconButton>
-							<Notifications></Notifications>
+						<IconButton sx={{ mr: 2 }}>
+							<Notifications color="warning" />
 						</IconButton>
 					</Tooltip>
 					{/* Menu Notif Heres */}
 					<Tooltip title="Open settings">
-						<IconButton onClick={handleOpenUserMenu}>
-							<AccountCircle></AccountCircle>
+						<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+							<Avatar color="primary" />
 						</IconButton>
 					</Tooltip>
 					<Menu
-						sx={{ mt: "35px" }}
+						sx={{ mt: "45px" }}
 						id="menu-appbar"
 						anchorEl={anchorElUser}
 						anchorOrigin={{ vertical: "top", horizontal: "right" }}
