@@ -8,18 +8,11 @@ import {
 	ListItemText,
 	Toolbar,
 } from "@mui/material";
-import { Home, Inventory, Person, ShoppingBag } from "@mui/icons-material";
+import { links } from "./Aside.data";
 
-type Props = {
+interface Props {
 	width: Number;
-};
-
-const links: string[][] = [
-	["Tableau de bord", "link", "Home"],
-	["Catalogue", "link", "Inventory"],
-	["Clients", "link", "Person"],
-	["Commandes", "link", "ShoppingBag"],
-];
+}
 
 const Aside = ({ width }: Props): JSX.Element => {
 	return (
@@ -37,10 +30,8 @@ const Aside = ({ width }: Props): JSX.Element => {
 				{links.map((link, index) => (
 					<ListItem key={index} disablePadding>
 						<ListItemButton>
-							<ListItemIcon>
-								<Home color="primary" />
-							</ListItemIcon>
-							<ListItemText primary={link[0]}></ListItemText>
+							<ListItemIcon>{link.node}</ListItemIcon>
+							<ListItemText primary={link.name}></ListItemText>
 						</ListItemButton>
 					</ListItem>
 				))}

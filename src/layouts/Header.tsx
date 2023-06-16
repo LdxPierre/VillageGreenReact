@@ -12,13 +12,14 @@ import {
 import { Notifications } from "@mui/icons-material";
 import React from "react";
 
-type Props = {
+interface Props {
 	width: Number;
-};
+	title: String;
+}
 
 const userMenu: Array<string> = ["Votre profile", "Se déconnecter"];
 
-function Header({ width }: Props): JSX.Element {
+function Header({ width, title }: Props): JSX.Element {
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
 		null
 	);
@@ -30,6 +31,7 @@ function Header({ width }: Props): JSX.Element {
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
+
 	return (
 		<AppBar
 			position="fixed"
@@ -37,7 +39,7 @@ function Header({ width }: Props): JSX.Element {
 			<Toolbar>
 				<Box sx={{ flexGrow: 1 }}>
 					<Typography variant="h6" component={"h1"}>
-						VillageGreen H1
+						{title}
 					</Typography>
 				</Box>
 				<Box sx={{ flexGrow: 0 }}>
