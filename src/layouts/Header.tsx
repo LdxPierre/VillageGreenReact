@@ -49,7 +49,7 @@ function Header({ width, title }: Props): JSX.Element {
 						</IconButton>
 					</Tooltip>
 					{/* Menu Notif Heres */}
-					<Tooltip title="Open settings">
+					<Tooltip title="Utilisateur">
 						<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 							<Avatar color="primary" />
 						</IconButton>
