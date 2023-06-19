@@ -1,10 +1,10 @@
 import Header from "./layouts/Header";
 import Aside from "./layouts/Aside";
-import Content from "./layouts/Content";
 import { CustomTheme } from "./components/CustomTheme";
 import { ThemeProvider } from "@emotion/react";
 import { Box, CssBaseline, Toolbar } from "@mui/material";
 import { useState } from "react";
+import Index from "./pages/order/Index";
 
 const drawerWidth: Number = 250;
 
@@ -19,7 +19,7 @@ function App() {
 				<Aside width={drawerWidth}></Aside>
 				<Box component={"main"} sx={{ flexGrow: 1, p: 3 }}>
 					<Toolbar />
-					<Content setTitle={setTitle} />
+					<Index setTitle={setTitle}></Index>
 				</Box>
 			</Box>
 		</ThemeProvider>
