@@ -9,8 +9,36 @@ const columns: GridColDef[] = [
 		sortable: false,
 		filterable: false,
 	},
-	{ field: "name", headerName: "Name", width: 130, filterable: false },
+	{
+		field: "status",
+		headerName: "Status",
+		width: 100,
+		filterable: false,
+		sortable: false,
+	},
+	{
+		field: "customer",
+		headerName: "Client",
+		width: 130,
+		filterable: false,
+		sortable: false,
+	},
+	{
+		field: "date",
+		headerName: "Date de commande",
+		width: 150,
+		filterable: false,
+		sortable: false,
+	},
+	{
+		field: "product",
+		headerName: "Produits",
+		width: 200,
+		filterable: false,
+		sortable: false,
+	},
 ];
+("");
 
 interface Props {
 	orderData: OrderData[];
