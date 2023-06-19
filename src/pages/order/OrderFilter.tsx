@@ -10,13 +10,21 @@ import {
 	SelectChangeEvent,
 	TextField,
 } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 
-interface Props {
-	searchOrder: (value: string) => void;
+interface Filters {
+	customers: string[];
+	sort: string;
+	search: string;
 }
 
-const filter = ["Filtre #1", "Filtre #2", "Filtre #3"];
+interface Props {
+	customers: string[];
+	applyFilters: ({}: Filters) => void;
+	filters: Filters;
+	setFilters: ({}: Filters) => void;
+}
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -28,56 +36,83 @@ const MenuProps = {
 	},
 };
 
-const OrderFilter = ({ searchOrder }: Props): JSX.Element => {
-	const [filterName, setFilterName] = useState<string[]>([]);
-	const [sort, setSort] = useState<string>("");
-
-	const handleChangeFilter = (event: SelectChangeEvent<typeof filterName>) => {
+const OrderFilter = ({
+	customers,
+	applyFilters,
+	filters,
+	setFilters,
+}: Props): JSX.Element => {
+	const handleChangeCustomersFilter = (
+		event: SelectChangeEvent<typeof filters.customers>
+	) => {
 		const {
 			target: { value },
 		} = event;
-		setFilterName(typeof value === "string" ? value.split(",") : value);
+		applyFilters({
+			...filters,
+			customers: typeof value === "string" ? value.split(",") : value,
+		});
+		setFilters({
+			...filters,
+			customers: typeof value === "string" ? value.split(",") : value,
+		});
 	};
 
 	const handleChangeSort = (event: SelectChangeEvent) => {
-		setSort(event.target.value as string);
+		applyFilters({
+			...filters,
+			sort: event.target.value,
+		});
+		setFilters({
+			...filters,
+			sort: event.target.value,
+		});
 	};
 
 	const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>): void => {
-		searchOrder(event.currentTarget.value);
+		applyFilters({
+			...filters,
+			search: event.target.value,
+		});
+		setFilters({
+			...filters,
+			search: event.target.value,
+		});
 	};
 
 	return (
 		<Box>
-			<FormControl sx={{ mb: "24px", width: 200 }}>
+			<FormControl sx={{ mb: "24px", width: 250 }}>
 				<InputLabel id="filterLabel">Filtrer</InputLabel>
 				<Select
 					labelId="filterLabel"
 					id="filterSelect"
 					multiple
-					onChange={handleChangeFilter}
-					value={filterName}
+					onChange={handleChangeCustomersFilter}
+					value={filters.customers}
 					input={<OutlinedInput label="Filtrer" />}
 					renderValue={(select) => select.join(", ")}
 					MenuProps={MenuProps}>
-					{filter.map((f, i) => (
-						<MenuItem key={i} value={f}>
-							<Checkbox checked={filterName.indexOf(f) > -1}></Checkbox>
-							<ListItemText primary={f}></ListItemText>
+					{customers.map((c, i) => (
+						<MenuItem key={i} value={c}>
+							<Checkbox checked={filters.customers.indexOf(c) > -1}></Checkbox>
+							<ListItemText primary={c}></ListItemText>
 						</MenuItem>
 					))}
 				</Select>
 			</FormControl>
-			<FormControl sx={{ ml: "8px", width: 200 }}>
+			<FormControl sx={{ ml: "8px", width: 250 }}>
 				<InputLabel id="sortLabel">Trier</InputLabel>
 				<Select
 					labelId="sortLabel"
 					id="sort"
-					value={sort}
+					value={filters.sort}
 					label="Trier"
 					onChange={handleChangeSort}>
-					<MenuItem value={"ASC"}>Date ASC</MenuItem>
-					<MenuItem value={"DESC"}>Date DESC</MenuItem>
+					<MenuItem value={"customer asc"}>Client ASC</MenuItem>
+					<MenuItem value={"customer desc"}>Client DESC</MenuItem>
+					<MenuItem value={"date asc"}>Date de commande ASC</MenuItem>
+					<MenuItem value={"date desc"}>Date de commande DESC</MenuItem>
 				</Select>
 			</FormControl>
 			<TextField
@@ -85,7 +120,7 @@ const OrderFilter = ({ searchOrder }: Props): JSX.Element => {
 				label="Rechercher"
 				variant="outlined"
 				onChange={handleChangeSearch}
-				sx={{ ml: "8px", width: 300 }}></TextField>
+				sx={{ ml: "8px", flexGrow: 1 }}></TextField>
 		</Box>
 	);
 };
