@@ -1,4 +1,4 @@
-import OrderInterface from "../../types/OrderInterface";
+import OrderInterface from "../../../types/OrderInterface";
 
 let OrderData: OrderInterface[] = [];
 

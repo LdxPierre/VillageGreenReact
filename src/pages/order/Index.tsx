@@ -1,9 +1,9 @@
 import { useState } from "react";
-import OrderFilter from "./OrderFilter";
-import OrderArray from "./OrderArray";
-import OrderData from "./Order.data";
+import OrderData from "./components/Order.data";
 import OrderInterface from "../../types/OrderInterface";
 import OrderFiltersInterface from "../../types/OrderFiltersInterface";
+import OrderFilter from "./components/OrderFilter";
+import OrderArray from "./components/OrderArray";
 
 // set callback func for sort
 function sortCB(
