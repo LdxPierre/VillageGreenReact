@@ -113,10 +113,12 @@ const Index = (): JSX.Element => {
 		setData(newData);
 	};
 
+	const customersList: string[] = getCustomersList(originalData);
+
 	return (
 		<>
 			<OrderFilter
-				customers={getCustomersList(originalData)}
+				customers={customersList}
 				applyFilters={applyFilters}
 				filters={filters}></OrderFilter>
 			<OrderArray orderData={data}></OrderArray>

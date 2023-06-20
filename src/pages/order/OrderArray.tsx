@@ -1,5 +1,9 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import OrderData from "./Order.data";
+import OrderInterface from "../../types/OrderInterface";
+
+interface Props {
+	orderData: OrderInterface[];
+}
 
 const columns: GridColDef[] = [
 	{
@@ -31,10 +35,6 @@ const columns: GridColDef[] = [
 		sortable: false,
 	},
 ];
-
-interface Props {
-	orderData: OrderData[];
-}
 
 const OrderArray = ({ orderData }: Props): JSX.Element => {
 	return (
