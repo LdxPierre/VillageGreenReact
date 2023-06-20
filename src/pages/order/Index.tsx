@@ -81,7 +81,9 @@ const getCustomersList = (): string[] => {
 			acc.push(curr.customer);
 		}
 		return acc;
-	}, [] as string[]).sort();
+	}, [] as string[]).sort((a: string, b: string) =>
+		a.localeCompare(b, undefined, { numeric: true })
+	);
 };
 
 const Index = ({ setTitle }: Props): JSX.Element => {
