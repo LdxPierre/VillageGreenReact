@@ -1,23 +1,6 @@
-interface OrderData {
-	id: string;
-	customer: string;
-	product: string[];
-	status: string;
-	date: Date;
-	// shippingDate: string;
-	// shippingName: string;
-	// shippingAddress: string;
-	// shippingCity: string;
-	// shippingZipCode: string;
-	// shippingCountry: string;
-	// billingName: string;
-	// billingAddress: string;
-	// billingCity: string;
-	// billingZipCode: string;
-	// billingCountry: string;
-}
+import OrderInterface from "../../types/OrderInterface";
 
-let OrderData: OrderData[] = [];
+let OrderData: OrderInterface[] = [];
 
 const getCustomers = (): string => {
 	return "Client #" + (Math.floor(Math.random() * 10) + 1);

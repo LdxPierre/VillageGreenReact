@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import {
 	Button,
 	Checkbox,
@@ -11,18 +12,16 @@ import {
 	SelectChangeEvent,
 	TextField,
 } from "@mui/material";
-import { ChangeEvent } from "react";
-
-interface Filters {
-	customers: string[];
-	sort: string;
-	search: string;
-}
+import OrderInterface from "../../types/OrderInterface";
+import OrderFiltersInterface from "../../types/OrderFiltersInterface";
 
 interface Props {
 	customers: string[];
-	applyFilters: ({}: Filters) => void;
-	filters: Filters;
+	applyFilters: (
+		{}: OrderFiltersInterface,
+		array?: OrderInterface[] | undefined
+	) => void;
+	filters: OrderFiltersInterface;
 }
 
 const ITEM_HEIGHT = 48;

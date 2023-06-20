@@ -30,15 +30,7 @@ const columns: GridColDef[] = [
 		filterable: false,
 		sortable: false,
 	},
-	{
-		field: "product",
-		headerName: "Produits",
-		width: 200,
-		filterable: false,
-		sortable: false,
-	},
 ];
-("");
 
 interface Props {
 	orderData: OrderData[];
