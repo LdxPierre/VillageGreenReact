@@ -96,22 +96,26 @@ const Index = ({ setTitle }: Props): JSX.Element => {
 
 	setTitle("Commandes");
 
-	const applyFilters = (filters: Filters): void => {
+	const applyFilters = (newFilters: Filters): void => {
 		let newData = [...OrderData];
 
-		if (filters.customers.length != 0) {
-			newData = newData.filter((el) => filters.customers.includes(el.customer));
-		}
-
-		if (filters.sort != "") {
-			newData = newData.sort(sortCB({ param: filters.sort }));
-		}
-
-		if (filters.search != "") {
-			newData = newData.filter(
-				(el) => el.customer.match(filters.search) || el.id.match(filters.search)
+		if (newFilters.customers.length != 0) {
+			newData = newData.filter((el) =>
+				newFilters.customers.includes(el.customer)
 			);
 		}
+
+		if (newFilters.sort != "") {
+			newData = newData.sort(sortCB({ param: newFilters.sort }));
+		}
+
+		if (newFilters.search != "") {
+			newData = newData.filter(
+				(el) =>
+					el.customer.match(newFilters.search) || el.id.match(newFilters.search)
+			);
+		}
+		setFilters(newFilters);
 		setData(newData);
 	};
 
@@ -120,8 +124,7 @@ const Index = ({ setTitle }: Props): JSX.Element => {
 			<OrderFilter
 				customers={getCustomersList()}
 				applyFilters={applyFilters}
-				filters={filters}
-				setFilters={setFilters}></OrderFilter>
+				filters={filters}></OrderFilter>
 			<OrderArray orderData={data}></OrderArray>
 		</>
 	);
