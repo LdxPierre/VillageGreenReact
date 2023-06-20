@@ -4,15 +4,14 @@ import { Box, CssBaseline, Toolbar } from "@mui/material";
 import { CustomTheme } from "./context/CustomTheme";
 import Header from "./layouts/Header/Header";
 import Aside from "./layouts/Aside/Aside";
-import Index from "./pages/order/Index";
-
+import Index from "./pages/inventory/Index";
 const drawerWidth: Number = 250;
 
 function App() {
 	const [title, setTitle] = useState("Village Green");
 
 	useEffect(() => {
-		setTitle("Commandes");
+		setTitle("Catalogue");
 	}, []);
 
 	return (
