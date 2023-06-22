@@ -1,51 +1,71 @@
-import { useState } from "react";
-import {
-	Box,
-	FormControl,
-	InputLabel,
-	MenuItem,
-	Select,
-	SelectChangeEvent,
-} from "@mui/material";
+import { Button, Divider, SelectChangeEvent, Stack, Typography } from "@mui/material";
 import CategoryInterface from "../../../types/CategoryInterface";
+import ProductInterface from "../../../types/ProductInterface";
+import MenuSelect from "./MenuSelect";
+import { Add } from "@mui/icons-material";
 
 interface Props {
 	categories: CategoryInterface[];
+	products: ProductInterface[];
+	filters: Filters;
+	applyFilters: (filter: Filters) => void;
+	selectCategories: CategoryInterface[];
+	setSelectCategories: (categoriesArray: CategoryInterface[]) => void;
 }
 
-const getMainCategories = (array: CategoryInterface[]): CategoryInterface[] =>
-	array.filter((c) => c.parent_id === null);
+interface Filters {
+	sort: string;
+	brands: string[];
+	search: string;
+}
 
-const Menu = ({ categories }: Props): JSX.Element => {
-	const [selectCategories, setSelectCategories] = useState<[string]>([""]);
-	const [categoryHasChildren, setCategoryHasChildren] =
-		useState<boolean>(false);
-
+const Menu = ({ categories, selectCategories, setSelectCategories }: Props): JSX.Element => {
 	const handleChangeCategory = (e: SelectChangeEvent): void => {
-		setSelectCategories([e.target.value]);
-		categories.filter((c) => c.id === e.target.value)[0].children
-			? setCategoryHasChildren(true)
-			: setCategoryHasChildren(false);
+		const cat = categories.find((c: CategoryInterface) => c.id === e.target.value)!;
+		const selectNbr = Number(e.target.name.replace("category-", "")) - 1;
+		const newSelectCategories = [...selectCategories];
+		newSelectCategories[selectNbr] = cat;
+		newSelectCategories.splice(selectNbr + 1);
+		setSelectCategories(newSelectCategories);
+	};
+
+	const inputsCategories = () => {
+		const inputsArray: JSX.Element[] = [];
+		for (let i = 0; i < 10; i++) {
+			inputsArray.push(
+				<MenuSelect
+					key={i}
+					categories={
+						// find main categories
+						// find childrens categories from parent
+						i === 0
+							? categories.filter((c) => c.parent_id === null)
+							: categories.filter((c) => c.parent_id === selectCategories[i - 1].id)
+					}
+					selectCategory={selectCategories[i] ? selectCategories[i].id : ""}
+					handleChangeCategory={handleChangeCategory}
+					label={`Catégorie ${i + 1}`}
+					name={`category-${i + 1}`}
+				/>
+			);
+			selectCategories[i] && selectCategories[i].children[0] ? null : (i = 11);
+		}
+		return inputsArray;
 	};
 
 	return (
-		<Box>
-			<FormControl sx={{ width: 200 }}>
-				<InputLabel id="categorySelectLabel">Catégorie 1</InputLabel>
-				<Select
-					labelId="categorySelectLabel"
-					id="categorySelect"
-					value={selectCategories[0]}
-					label="Catégorie 1"
-					onChange={handleChangeCategory}>
-					{getMainCategories(categories).map((c, i) => (
-						<MenuItem key={i} value={c.name}>
-							{c.name}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-		</Box>
+		<Stack spacing={2} sx={{ width: 220 }}>
+			<Typography>Sélectionner une catégorie</Typography>
+			{inputsCategories()}
+			{selectCategories.length > 0 && !selectCategories[selectCategories.length - 1].children[0] ? (
+				<>
+					<Divider />
+					<Button variant="contained" startIcon={<Add />}>
+						Ajouter un produit
+					</Button>
+				</>
+			) : null}
+		</Stack>
 	);
 };
 
