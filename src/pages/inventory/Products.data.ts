@@ -1,0 +1,48 @@
+const productsData = [
+	{
+		id: "1",
+		category_id: "7",
+		name: "Product #1",
+		url: "product-1",
+		brand: "Brand #1",
+		price: 120.0,
+		stock: 91,
+	},
+	{
+		id: "2",
+		category_id: "7",
+		name: "Product #2",
+		url: "product-2",
+		brand: "Brand #2",
+		price: 120.0,
+		stock: 91,
+	},
+	{
+		id: "3",
+		category_id: "7",
+		name: "Product #3",
+		url: "product-3",
+		brand: "Brand #3",
+		price: 120.0,
+		stock: 91,
+	},
+	{
+		id: "4",
+		category_id: "7",
+		name: "Product #4",
+		url: "product-4",
+		brand: "Brand #2",
+		price: 120.0,
+		stock: 91,
+	},
+	{
+		id: "5",
+		category_id: "7",
+		name: "Product #5",
+		url: "product-5",
+		brand: "Brand #1",
+		price: 120.0,
+		stock: 91,
+	},
+];
+export default productsData;
