@@ -12,15 +12,12 @@ import {
 	SelectChangeEvent,
 	TextField,
 } from "@mui/material";
-import OrderInterface from "../../types/OrderInterface";
-import OrderFiltersInterface from "../../types/OrderFiltersInterface";
+import OrderInterface from "../../../types/OrderInterface";
+import OrderFiltersInterface from "../../../types/OrderFiltersInterface";
 
 interface Props {
 	customers: string[];
-	applyFilters: (
-		{}: OrderFiltersInterface,
-		array?: OrderInterface[] | undefined
-	) => void;
+	applyFilters: ({}: OrderFiltersInterface, array?: OrderInterface[] | undefined) => void;
 	filters: OrderFiltersInterface;
 }
 
@@ -35,14 +32,8 @@ const MenuProps = {
 	},
 };
 
-const OrderFilter = ({
-	customers,
-	applyFilters,
-	filters,
-}: Props): JSX.Element => {
-	const handleChangeCustomersFilter = (
-		event: SelectChangeEvent<typeof filters.customers>
-	) => {
+const OrderFilter = ({ customers, applyFilters, filters }: Props): JSX.Element => {
+	const handleChangeCustomersFilter = (event: SelectChangeEvent<typeof filters.customers>) => {
 		const {
 			target: { value },
 		} = event;
@@ -86,8 +77,7 @@ const OrderFilter = ({
 						MenuProps={MenuProps}>
 						{customers.map((c, i) => (
 							<MenuItem key={i} value={c}>
-								<Checkbox
-									checked={filters.customers.indexOf(c) > -1}></Checkbox>
+								<Checkbox checked={filters.customers.indexOf(c) > -1}></Checkbox>
 								<ListItemText primary={c}></ListItemText>
 							</MenuItem>
 						))}
@@ -97,12 +87,7 @@ const OrderFilter = ({
 			<Grid item>
 				<FormControl sx={{ width: 250 }}>
 					<InputLabel id="sortLabel">Trier</InputLabel>
-					<Select
-						labelId="sortLabel"
-						id="sort"
-						value={filters.sort}
-						label="Trier"
-						onChange={handleChangeSort}>
+					<Select labelId="sortLabel" id="sort" value={filters.sort} label="Trier" onChange={handleChangeSort}>
 						<MenuItem value={"customer asc"}>Client ASC</MenuItem>
 						<MenuItem value={"customer desc"}>Client DESC</MenuItem>
 						<MenuItem value={"date asc"}>Date de commande ASC</MenuItem>

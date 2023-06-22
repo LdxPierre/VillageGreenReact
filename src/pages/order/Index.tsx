@@ -6,19 +6,13 @@ import OrderFilter from "./components/OrderFilter";
 import OrderArray from "./components/OrderArray";
 
 // set callback func for sort
-function sortCB(
-	param: string
-): ((a: OrderInterface, b: OrderInterface) => 0 | 1 | -1) | undefined {
+function sortCB(param: string): ((a: OrderInterface, b: OrderInterface) => 0 | 1 | -1) | undefined {
 	switch (param) {
 		case "customer asc":
 			return (a: OrderInterface, b: OrderInterface) => {
-				if (
-					a.customer.localeCompare(b.customer, undefined, { numeric: true }) > 0
-				) {
+				if (a.customer.localeCompare(b.customer, undefined, { numeric: true }) > 0) {
 					return 1;
-				} else if (
-					a.customer.localeCompare(b.customer, undefined, { numeric: true }) < 0
-				) {
+				} else if (a.customer.localeCompare(b.customer, undefined, { numeric: true }) < 0) {
 					return -1;
 				} else {
 					return 0;
@@ -27,13 +21,9 @@ function sortCB(
 			break;
 		case "customer desc":
 			return (a: OrderInterface, b: OrderInterface) => {
-				if (
-					a.customer.localeCompare(b.customer, undefined, { numeric: true }) < 0
-				) {
+				if (a.customer.localeCompare(b.customer, undefined, { numeric: true }) < 0) {
 					return 1;
-				} else if (
-					a.customer.localeCompare(b.customer, undefined, { numeric: true }) > 0
-				) {
+				} else if (a.customer.localeCompare(b.customer, undefined, { numeric: true }) > 0) {
 					return -1;
 				} else {
 					return 0;
@@ -73,9 +63,7 @@ const getCustomersList = (array: OrderInterface[]): string[] => {
 			}
 			return acc;
 		}, [] as string[])
-		.sort((a: string, b: string) =>
-			a.localeCompare(b, undefined, { numeric: true })
-		);
+		.sort((a: string, b: string) => a.localeCompare(b, undefined, { numeric: true }));
 };
 
 const Index = (): JSX.Element => {
@@ -87,16 +75,11 @@ const Index = (): JSX.Element => {
 		search: "",
 	});
 
-	const applyFilters = (
-		newFilters: OrderFiltersInterface,
-		array: OrderInterface[] = originalData
-	): void => {
+	const applyFilters = (newFilters: OrderFiltersInterface, array: OrderInterface[] = originalData): void => {
 		let newData = [...array];
 
 		if (newFilters.customers.length != 0) {
-			newData = newData.filter((el) =>
-				newFilters.customers.includes(el.customer)
-			);
+			newData = newData.filter((el) => newFilters.customers.includes(el.customer));
 		}
 
 		if (newFilters.sort != "") {
@@ -104,10 +87,7 @@ const Index = (): JSX.Element => {
 		}
 
 		if (newFilters.search != "") {
-			newData = newData.filter(
-				(el) =>
-					el.customer.match(newFilters.search) || el.id.match(newFilters.search)
-			);
+			newData = newData.filter((el) => el.customer.match(newFilters.search) || el.id.match(newFilters.search));
 		}
 		setFilters(newFilters);
 		setData(newData);
@@ -117,10 +97,7 @@ const Index = (): JSX.Element => {
 
 	return (
 		<>
-			<OrderFilter
-				customers={customersList}
-				applyFilters={applyFilters}
-				filters={filters}></OrderFilter>
+			<OrderFilter customers={customersList} applyFilters={applyFilters} filters={filters}></OrderFilter>
 			<OrderArray orderData={data}></OrderArray>
 		</>
 	);
