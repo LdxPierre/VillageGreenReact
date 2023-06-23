@@ -3,6 +3,8 @@ import CategoryInterface from "../../../types/CategoryInterface";
 import ProductInterface from "../../../types/ProductInterface";
 import MenuSelect from "./MenuSelect";
 import { Add } from "@mui/icons-material";
+import MenuFilters from "./MenuFilters";
+import { Fragment } from "react";
 
 interface Props {
 	categories: CategoryInterface[];
@@ -11,6 +13,8 @@ interface Props {
 	applyFilters: (filter: Filters) => void;
 	selectCategories: CategoryInterface[];
 	setSelectCategories: (categoriesArray: CategoryInterface[]) => void;
+	getProducts: (category: CategoryInterface | null) => void;
+	resetFilters: () => void;
 }
 
 interface Filters {
@@ -19,7 +23,16 @@ interface Filters {
 	search: string;
 }
 
-const Menu = ({ categories, selectCategories, setSelectCategories }: Props): JSX.Element => {
+const Menu = ({
+	categories,
+	products,
+	selectCategories,
+	setSelectCategories,
+	getProducts,
+	filters,
+	applyFilters,
+	resetFilters,
+}: Props): JSX.Element => {
 	const handleChangeCategory = (e: SelectChangeEvent): void => {
 		const cat = categories.find((c: CategoryInterface) => c.id === e.target.value)!;
 		const selectNbr = Number(e.target.name.replace("category-", "")) - 1;
@@ -27,6 +40,8 @@ const Menu = ({ categories, selectCategories, setSelectCategories }: Props): JSX
 		newSelectCategories[selectNbr] = cat;
 		newSelectCategories.splice(selectNbr + 1);
 		setSelectCategories(newSelectCategories);
+		resetFilters();
+		!cat.children[0] ? getProducts(cat) : getProducts(null);
 	};
 
 	const inputsCategories = () => {
@@ -58,12 +73,17 @@ const Menu = ({ categories, selectCategories, setSelectCategories }: Props): JSX
 			<Typography>Sélectionner une catégorie</Typography>
 			{inputsCategories()}
 			{selectCategories.length > 0 && !selectCategories[selectCategories.length - 1].children[0] ? (
-				<>
+				<Fragment>
 					<Divider />
 					<Button variant="contained" startIcon={<Add />}>
 						Ajouter un produit
 					</Button>
-				</>
+					<MenuFilters
+						filters={filters}
+						applyFilters={applyFilters}
+						products={products}
+						resetFilters={resetFilters}></MenuFilters>
+				</Fragment>
 			) : null}
 		</Stack>
 	);
