@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import Menu from "./components/Menu";
 import CategoryInterface from "../../types/CategoryInterface";
 import HydraCollectionInterface from "../../types/HydraCollectionInterface";
@@ -80,7 +80,14 @@ const Index = (): JSX.Element => {
 				getProducts={getProducts}
 				setPage={setPage}></Menu>
 			<Box sx={{ flexGrow: 1 }}>
-				{products ? <ProductsList products={products} page={page} setPage={setPage} getProducts={getProducts} /> : null}
+				{loading && !products ? (
+					<Box display={"flex"} justifyContent={"center"} alignItems={"center"} flexGrow={1}>
+						<CircularProgress />
+					</Box>
+				) : null}
+				{products ? (
+					<ProductsList products={products} page={page} setPage={setPage} getProducts={getProducts} loading={loading} />
+				) : null}
 			</Box>
 		</Box>
 	);
