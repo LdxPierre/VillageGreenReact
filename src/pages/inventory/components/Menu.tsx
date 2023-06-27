@@ -1,38 +1,17 @@
-import { Button, Divider, SelectChangeEvent, Stack, Typography } from "@mui/material";
+import { Button, SelectChangeEvent, Stack } from "@mui/material";
 import CategoryInterface from "../../../types/CategoryInterface";
-import ProductInterface from "../../../types/ProductInterface";
 import MenuSelect from "./MenuSelect";
 import { Add } from "@mui/icons-material";
-import MenuFilters from "./MenuFilters";
-import { Fragment } from "react";
 
 interface Props {
   categories: CategoryInterface[];
-  products: ProductInterface[];
-  filters: Filters;
-  applyFilters: (filter: Filters) => void;
   selectCategories: CategoryInterface[];
   setSelectCategories: (categoriesArray: CategoryInterface[]) => void;
-  getProducts: (category: CategoryInterface | null) => void;
-  resetFilters: () => void;
+  getProducts: (category?: CategoryInterface, filters?: string) => void;
+  setPage: (page: number) => void;
 }
 
-interface Filters {
-  sort: string;
-  brands: string[];
-  search: string;
-}
-
-const Menu = ({
-  categories,
-  products,
-  selectCategories,
-  setSelectCategories,
-  getProducts,
-  filters,
-  applyFilters,
-  resetFilters,
-}: Props): JSX.Element => {
+const Menu = ({ categories, selectCategories, setSelectCategories, getProducts, setPage }: Props): JSX.Element => {
   const handleChangeCategory = (e: SelectChangeEvent): void => {
     const cat = categories.find((c: CategoryInterface) => c.id === Number(e.target.value))!;
     const selectNbr = Number(e.target.name.replace("category-", "")) - 1;
@@ -40,8 +19,8 @@ const Menu = ({
     newSelectCategories[selectNbr] = cat;
     newSelectCategories.splice(selectNbr + 1);
     setSelectCategories(newSelectCategories);
-    resetFilters();
-    cat.content === "products" ? getProducts(cat) : getProducts(null);
+    setPage(1);
+    cat.content === "products" ? getProducts(cat) : getProducts();
   };
 
   const inputsCategories = () => {
@@ -70,21 +49,11 @@ const Menu = ({
 
   return (
     <Stack spacing={2} sx={{ width: 220 }}>
-      <Typography>Sélectionner une catégorie</Typography>
       {inputsCategories()}
       {selectCategories.length > 0 && selectCategories[selectCategories.length - 1].content === "products" ? (
-        <Fragment>
-          <Divider />
-          <Button variant="contained" startIcon={<Add />}>
-            Ajouter un produit
-          </Button>
-          <MenuFilters
-            filters={filters}
-            applyFilters={applyFilters}
-            products={products}
-            resetFilters={resetFilters}
-          ></MenuFilters>
-        </Fragment>
+        <Button variant="contained" startIcon={<Add />}>
+          Ajouter un produit
+        </Button>
       ) : null}
     </Stack>
   );

@@ -1,78 +1,19 @@
 import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import Menu from "./components/Menu";
 import ProductInterface from "../../types/ProductInterface";
 import CategoryInterface from "../../types/CategoryInterface";
+import HydraCollectionInterface from "../../types/HydraCollectionInterface";
+import PaginationInterface from "../../types/PaginationInterface";
 import ProductsList from "./components/ProductsList";
-import { Box, CircularProgress } from "@mui/material";
-
-interface Filters {
-  sort: string;
-  brands: string[];
-  search: string;
-}
-
-const sortCB = (sort: string) => {
-  switch (sort) {
-    case "nameASC": {
-      return (a: ProductInterface, b: ProductInterface): 1 | -1 | 0 => {
-        const result = a.name.localeCompare(b.name, undefined, { numeric: true });
-        if (result > 0) {
-          return 1;
-        } else if (result < 0) {
-          return -1;
-        } else {
-          return 0;
-        }
-      };
-      break;
-    }
-    case "nameDESC": {
-      return (a: ProductInterface, b: ProductInterface): 1 | -1 | 0 => {
-        const result = a.name.localeCompare(b.name, undefined, { numeric: true });
-        if (result < 0) {
-          return 1;
-        } else if (result > 0) {
-          return -1;
-        } else {
-          return 0;
-        }
-      };
-      break;
-    }
-    case "priceASC": {
-      return (a: ProductInterface, b: ProductInterface): 1 | -1 | 0 => {
-        if (a.price > b.price) {
-          return 1;
-        } else if (a.price < b.price) {
-          return -1;
-        } else {
-          return 0;
-        }
-      };
-      break;
-    }
-    case "priceDESC": {
-      return (a: ProductInterface, b: ProductInterface): 1 | -1 | 0 => {
-        if (a.price < b.price) {
-          return 1;
-        } else if (a.price > b.price) {
-          return -1;
-        } else {
-          return 0;
-        }
-      };
-      break;
-    }
-  }
-};
 
 const Index = (): JSX.Element => {
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
   const [selectCategories, setSelectCategories] = useState<CategoryInterface[]>([]);
   const [products, setProducts] = useState<ProductInterface[]>([]);
-  const [productsAfterFilters, setProductsAfterFilters] = useState<ProductInterface[] | null>(null);
-  const [productFilters, setProductFilters] = useState<Filters>({ sort: "nameASC", brands: [], search: "" });
+  const [pagination, setPagination] = useState<PaginationInterface | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     let ignore = false;
@@ -102,17 +43,25 @@ const Index = (): JSX.Element => {
     };
   }, []);
 
-  const getProducts = async (category: CategoryInterface | null): Promise<void> => {
-    if (category) {
-      setLoading(true);
-      resetFilters();
+  const getProducts = async (category?: CategoryInterface, filters?: string): Promise<void> => {
+    if (category || filters) {
+      let IRI = "http://localhost:8000/api/products";
+
+      if (filters) {
+        IRI = `${IRI}?${filters}`;
+      } else if (category) {
+        IRI = `${IRI}?category=${category.id}`;
+      }
+
       try {
-        const response: Response = await fetch(`http://localhost:8000/api/products?category=${category.id}`, {
-          headers: { Accept: "application/json" },
+        setLoading(true);
+        const response: Response = await fetch(IRI, {
+          headers: { Accept: "application/ld+json" },
         });
         if (response.ok) {
-          const body: ProductInterface[] | ProductInterface = await response.json();
-          Array.isArray(body) ? setProducts(body) : setProducts([body]);
+          const body: HydraCollectionInterface = await response.json();
+          Array.isArray(body["hydra:member"]) ? setProducts(body["hydra:member"]) : setProducts([body["hydra:member"]]);
+          body["hydra:view"] ? setPagination(body["hydra:view"]) : setPagination(null);
         } else {
           throw new Error("Products request has failed");
         }
@@ -123,55 +72,30 @@ const Index = (): JSX.Element => {
       }
     } else {
       setProducts([]);
+      setPagination(null);
     }
-  };
-
-  const applyFilters = (newFilters: Filters): void => {
-    let filteredProducts: ProductInterface[] = [...products];
-
-    if (newFilters.search != "") {
-      filteredProducts = filteredProducts.filter(
-        (e) =>
-          e.name.match(newFilters.search) || e.brand.match(newFilters.search) || String(e.id).match(newFilters.search)
-      );
-    }
-
-    if (newFilters.brands[0]) {
-      filteredProducts = filteredProducts.filter((e) => newFilters.brands.includes(e.brand));
-    }
-
-    if (newFilters.sort != "") {
-      filteredProducts = filteredProducts.sort(sortCB(newFilters.sort));
-    }
-
-    setProductsAfterFilters(filteredProducts);
-    setProductFilters(newFilters);
-  };
-
-  const resetFilters = (): void => {
-    setProductFilters({ sort: "nameASC", brands: [], search: "" });
-    setProductsAfterFilters(null);
   };
 
   return (
     <Box sx={{ display: "flex", gap: "24px" }}>
       <Menu
         categories={categories}
-        products={products}
-        filters={productFilters}
-        applyFilters={applyFilters}
-        resetFilters={resetFilters}
         selectCategories={selectCategories}
         setSelectCategories={setSelectCategories}
         getProducts={getProducts}
+        setPage={setPage}
       ></Menu>
       <Box sx={{ flexGrow: 1 }}>
-        {loading === false &&
-        selectCategories.length > 0 &&
-        selectCategories[selectCategories.length - 1].content === "products" ? (
-          <ProductsList products={productsAfterFilters ? productsAfterFilters : products} />
+        {selectCategories.length > 0 && selectCategories[selectCategories.length - 1].content === "products" ? (
+          <ProductsList
+            products={products}
+            pagination={pagination}
+            page={page}
+            setPage={setPage}
+            getProducts={getProducts}
+            loading={loading}
+          />
         ) : null}
-        {loading ? <CircularProgress /> : null}
       </Box>
     </Box>
   );
