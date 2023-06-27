@@ -1,19 +1,22 @@
-import PaginationInterface from "../../../types/PaginationInterface";
-import ProductInterface from "../../../types/ProductInterface";
 import PaginationLinks from "../../../components/PaginationsLinks";
 import CategoryInterface from "../../../types/CategoryInterface";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import HydraCollectionInterface from "../../../types/HydraCollectionInterface";
+import ProductInterface from "../../../types/ProductInterface";
+import PaginationInterface from "../../../types/PaginationInterface";
 
 interface Props {
-	products: ProductInterface[];
-	pagination: PaginationInterface | null;
+	products: HydraCollectionInterface;
 	page: number;
 	setPage: (page: number) => void;
 	getProducts: (category?: CategoryInterface, filters?: string) => void;
-	loading: boolean;
 }
 
-const ProductsList = ({ products, pagination, getProducts, page, setPage }: Props): JSX.Element => {
+const ProductsList = ({ products, getProducts, page, setPage }: Props): JSX.Element => {
+	const pagination: PaginationInterface | null = products["hydra:view"];
+	const total: number = products["hydra:totalItems"];
+	const items: ProductInterface[] = products["hydra:member"];
+
 	return (
 		<>
 			{pagination?.["hydra:last"] ? (
@@ -21,7 +24,8 @@ const ProductsList = ({ products, pagination, getProducts, page, setPage }: Prop
 					pagination={pagination}
 					getProducts={getProducts}
 					page={page}
-					setPage={setPage}></PaginationLinks>
+					setPage={setPage}
+					total={total}></PaginationLinks>
 			) : null}
 			<TableContainer component={Paper}>
 				<Table aria-label="Products">
@@ -36,7 +40,7 @@ const ProductsList = ({ products, pagination, getProducts, page, setPage }: Prop
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{products.map((p) => (
+						{items.map((p) => (
 							<TableRow key={p.id} hover>
 								<TableCell component={"th"} scope="row">
 									{p.id}
@@ -60,7 +64,8 @@ const ProductsList = ({ products, pagination, getProducts, page, setPage }: Prop
 					pagination={pagination}
 					getProducts={getProducts}
 					page={page}
-					setPage={setPage}></PaginationLinks>
+					setPage={setPage}
+					total={total}></PaginationLinks>
 			) : null}
 		</>
 	);
