@@ -1,37 +1,41 @@
 import { useEffect, useState } from "react";
-import HydraCollectionInterface from "../types/HydraCollectionInterface";
+import { HydraCollectionInterface } from "../types";
 
 interface Props {
-	url: string;
+	pathname: string;
+	params?: string;
 	headers?: {};
 }
 
-const useFetchData = ({ url, headers }: Props) => {
+export const useFetchData = ({ pathname, params, headers }: Props) => {
 	const [data, setData] = useState<HydraCollectionInterface>();
 	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState<boolean>(false);
+	const urlApi = new URL("http://localhost:8000/api/");
 
 	useEffect(() => {
 		let ignore = false;
 		const fetchData = async () => {
 			try {
-				const res = await fetch(url, headers);
+				setLoading(true);
+				const res = await fetch(`${urlApi}${pathname}?${params ?? ""}`, headers);
 				if (res.ok) {
-					const body = await res.json();
+					const body: HydraCollectionInterface = await res.json();
 					setData(body);
 				} else {
 					setError("Erreur");
 				}
 			} catch (e) {
 				console.error(e);
+			} finally {
+				setLoading(false);
 			}
 		};
 		fetchData();
 		return () => {
 			ignore = true;
 		};
-	}, []);
+	}, [pathname, params, headers]);
 
-	return { data, error };
+	return { data, error, loading };
 };
-
-export default useFetchData;

@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import Menu from "./components/Menu";
-import CategoryInterface from "../../types/CategoryInterface";
-import HydraCollectionInterface from "../../types/HydraCollectionInterface";
+import { CategoryInterface, HydraCollectionInterface } from "../../types";
 import ProductsList from "./components/ProductsList";
-import useFetchData from "../../hooks/useFetchData";
+import { useFetchData } from "../../hooks";
 
 const Index = (): JSX.Element => {
-	const { data: categories } = useFetchData({
-		url: "http://localhost:8000/api/categories",
+	const { data: categories, loading } = useFetchData({
+		pathname: "categories",
 	});
 	const [selectCategories, setSelectCategories] = useState<CategoryInterface[]>([]);
 	const [products, setProducts] = useState<HydraCollectionInterface | null>(null);
-	const [loading, setLoading] = useState<boolean>(false);
 	const [page, setPage] = useState(1);
 
 	const getProducts = async (category?: CategoryInterface, filters?: string): Promise<void> => {
@@ -26,7 +24,6 @@ const Index = (): JSX.Element => {
 			}
 
 			try {
-				setLoading(true);
 				const response: Response = await fetch(IRI, {
 					headers: { Accept: "application/ld+json" },
 				});
@@ -38,8 +35,6 @@ const Index = (): JSX.Element => {
 				}
 			} catch (e) {
 				console.error(e);
-			} finally {
-				setLoading(false);
 			}
 		} else {
 			setProducts(null);

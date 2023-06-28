@@ -4,15 +4,11 @@ import { Box, CssBaseline, Toolbar } from "@mui/material";
 import { CustomTheme } from "./context/CustomTheme";
 import Header from "./layouts/Header/Header";
 import Aside from "./layouts/Aside/Aside";
-import Index from "./pages/inventory/Index";
+import { NewProduct } from "./pages/inventory/NewProduct";
 const drawerWidth: Number = 250;
 
 function App() {
 	const [title, setTitle] = useState("Village Green");
-
-	useEffect(() => {
-		setTitle("Catalogue");
-	}, []);
 
 	return (
 		<ThemeProvider theme={CustomTheme}>
@@ -22,7 +18,7 @@ function App() {
 				<Aside width={drawerWidth}></Aside>
 				<Box component={"main"} sx={{ flexGrow: 1, p: 3 }}>
 					<Toolbar />
-					<Index></Index>
+					<NewProduct />
 				</Box>
 			</Box>
 		</ThemeProvider>
