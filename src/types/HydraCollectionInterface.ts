@@ -1,7 +1,7 @@
-import PaginationInterface from "./PaginationInterface";
+import { PaginationInterface } from ".";
 
-export default interface HydraCollectionInterface {
-  "hydra:totalItems": number;
-  "hydra:member": any[];
-  "hydra:view": PaginationInterface | null;
+export interface HydraCollectionInterface {
+	"hydra:totalItems": number;
+	"hydra:member": any[];
+	"hydra:view": PaginationInterface | null;
 }

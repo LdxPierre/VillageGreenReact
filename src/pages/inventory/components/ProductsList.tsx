@@ -1,5 +1,5 @@
 import PaginationLinks from "../../../components/PaginationsLinks";
-import CategoryInterface from "../../../types/CategoryInterface";
+import { CategoryInterface, HydraCollectionInterface, ProductInterface, PaginationInterface } from "../../../types";
 import {
 	Box,
 	Button,
@@ -12,9 +12,6 @@ import {
 	TableHead,
 	TableRow,
 } from "@mui/material";
-import HydraCollectionInterface from "../../../types/HydraCollectionInterface";
-import ProductInterface from "../../../types/ProductInterface";
-import PaginationInterface from "../../../types/PaginationInterface";
 
 interface Props {
 	products: HydraCollectionInterface;

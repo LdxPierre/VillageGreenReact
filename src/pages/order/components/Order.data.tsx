@@ -1,4 +1,4 @@
-import OrderInterface from "../../../types/OrderInterface";
+import { OrderInterface } from "../../../types";
 
 let OrderData: OrderInterface[] = [];
 
@@ -17,9 +17,7 @@ const getProducts = (): string[] => {
 
 const getNewDate = (): Date => {
 	const date = new Date(0);
-	date.setSeconds(
-		Math.floor(Math.random() * (1687171968 - 1371631968) + 1371631968)
-	);
+	date.setSeconds(Math.floor(Math.random() * (1687171968 - 1371631968) + 1371631968));
 
 	return date;
 };

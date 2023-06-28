@@ -12,8 +12,7 @@ import {
 	SelectChangeEvent,
 	TextField,
 } from "@mui/material";
-import OrderInterface from "../../../types/OrderInterface";
-import OrderFiltersInterface from "../../../types/OrderFiltersInterface";
+import { OrderInterface, OrderFiltersInterface } from "../../../types";
 
 interface Props {
 	customers: string[];

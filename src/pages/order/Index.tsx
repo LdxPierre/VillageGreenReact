@@ -1,9 +1,8 @@
 import { useState } from "react";
 import OrderData from "./components/Order.data";
-import OrderInterface from "../../types/OrderInterface";
-import OrderFiltersInterface from "../../types/OrderFiltersInterface";
 import OrderFilter from "./components/OrderFilter";
 import OrderArray from "./components/OrderArray";
+import { OrderInterface, OrderFiltersInterface } from "../../types";
 
 // set callback func for sort
 function sortCB(param: string): ((a: OrderInterface, b: OrderInterface) => 0 | 1 | -1) | undefined {

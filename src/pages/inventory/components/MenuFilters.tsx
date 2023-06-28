@@ -11,7 +11,7 @@ import {
 	Button,
 } from "@mui/material";
 import { ChangeEvent } from "react";
-import ProductInterface from "../../../types/ProductInterface";
+import { ProductInterface } from "../../../types";
 
 interface Filters {
 	sort: string;

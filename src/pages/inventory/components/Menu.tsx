@@ -1,5 +1,5 @@
 import { Button, SelectChangeEvent, Stack } from "@mui/material";
-import CategoryInterface from "../../../types/CategoryInterface";
+import { CategoryInterface } from "../../../types";
 import MenuSelect from "./MenuSelect";
 import { Add } from "@mui/icons-material";
 

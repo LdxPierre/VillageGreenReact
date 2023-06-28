@@ -1,6 +1,5 @@
 import { Box, Pagination, Stack, Typography } from "@mui/material";
-import PaginationInterface from "../types/PaginationInterface";
-import CategoryInterface from "../types/CategoryInterface";
+import { PaginationInterface, CategoryInterface } from "../types";
 
 interface Props {
 	pagination: PaginationInterface;

@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import OrderInterface from "../../types/OrderInterface";
+import { OrderInterface } from "../../../types";
 
 interface Props {
 	orderData: OrderInterface[];

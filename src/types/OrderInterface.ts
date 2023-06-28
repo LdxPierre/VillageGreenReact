@@ -1,4 +1,4 @@
-export default interface OrderInterface {
+export interface OrderInterface {
 	id: string;
 	customer: string;
 	product: string[];
