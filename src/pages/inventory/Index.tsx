@@ -3,64 +3,50 @@ import { Box, CircularProgress } from "@mui/material";
 import Menu from "./components/Menu";
 import { CategoryInterface, HydraCollectionInterface } from "../../types";
 import ProductsList from "./components/ProductsList";
-import { useFetchData } from "../../hooks";
+import { getProducts } from "../../apis";
+import { useFetchCategories } from "../../hooks/useFetchCategories";
 
 const Index = (): JSX.Element => {
-	const { data: categories, loading } = useFetchData({
-		pathname: "categories",
-	});
-	const [selectCategories, setSelectCategories] = useState<CategoryInterface[]>([]);
-	const [products, setProducts] = useState<HydraCollectionInterface | null>(null);
-	const [page, setPage] = useState(1);
+  const { categories, loading } = useFetchCategories();
+  const [selectCategories, setSelectCategories] = useState<CategoryInterface[]>([]);
+  const [products, setProducts] = useState<HydraCollectionInterface | null>(null);
+  const [page, setPage] = useState(1);
 
-	const getProducts = async (category?: CategoryInterface, filters?: string): Promise<void> => {
-		if (category || filters) {
-			let IRI = "http://localhost:8000/api/products";
+  const fetchProducts = async (queryParams?: URLSearchParams): Promise<void> => {
+    if (queryParams) {
+      setProducts(await getProducts(queryParams));
+    } else {
+      setProducts(null);
+    }
+  };
 
-			if (filters) {
-				IRI = `${IRI}?${filters}`;
-			} else if (category) {
-				IRI = `${IRI}?category=${category.id}`;
-			}
-
-			try {
-				const response: Response = await fetch(IRI, {
-					headers: { Accept: "application/ld+json" },
-				});
-				if (response.ok) {
-					const body: HydraCollectionInterface = await response.json();
-					setProducts(body);
-				} else {
-					throw new Error("Products request has failed");
-				}
-			} catch (e) {
-				console.error(e);
-			}
-		} else {
-			setProducts(null);
-		}
-	};
-
-	return (
-		<Box sx={{ display: "flex", gap: "24px" }}>
-			<Menu
-				categories={categories?.["hydra:member"]}
-				selectCategories={selectCategories}
-				setSelectCategories={setSelectCategories}
-				getProducts={getProducts}
-				setPage={setPage}></Menu>
-			<Box sx={{ flexGrow: 1 }}>
-				{loading && !products ? (
-					<Box display={"flex"} justifyContent={"center"} alignItems={"center"} flexGrow={1}>
-						<CircularProgress />
-					</Box>
-				) : null}
-				{products ? (
-					<ProductsList products={products} page={page} setPage={setPage} getProducts={getProducts} loading={loading} />
-				) : null}
-			</Box>
-		</Box>
-	);
+  return (
+    <Box sx={{ display: "flex", gap: "24px" }}>
+      <Menu
+        categories={categories?.["hydra:member"]}
+        selectCategories={selectCategories}
+        setSelectCategories={setSelectCategories}
+        fetchProducts={fetchProducts}
+        setPage={setPage}
+      ></Menu>
+      <Box sx={{ flexGrow: 1 }}>
+        {loading && !products ? (
+          <Box display={"flex"} justifyContent={"center"} alignItems={"center"} flexGrow={1}>
+            <CircularProgress />
+          </Box>
+        ) : null}
+        {products ? (
+          <ProductsList
+            products={products}
+            page={page}
+            setPage={setPage}
+            fetchProducts={fetchProducts}
+            loading={loading}
+          />
+        ) : null}
+      </Box>
+    </Box>
+  );
 };
 
 export default Index;
