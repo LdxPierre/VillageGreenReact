@@ -1,5 +1,6 @@
-import { Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
+import { Drawer, List, Toolbar } from "@mui/material";
 import { Home, Inventory, Person, ShoppingBag } from "@mui/icons-material";
+import ListItemLink from "./components/ListItemLink";
 
 interface Props {
   width: Number;
@@ -8,21 +9,21 @@ interface Props {
 type Links = {
   name: string;
   path: string;
-  node: JSX.Element;
+  icon: JSX.Element;
 };
 
 const links: Links[] = [
-  { name: "Home", path: "", node: <Home color="primary"></Home> },
+  { name: "Home", path: "/", icon: <Home color="primary"></Home> },
   {
     name: "Catalogue",
-    path: "",
-    node: <Inventory color="primary"></Inventory>,
+    path: "/products",
+    icon: <Inventory color="primary"></Inventory>,
   },
-  { name: "Clients", path: "", node: <Person color="primary"></Person> },
+  { name: "Clients", path: "", icon: <Person color="primary"></Person> },
   {
     name: "Commandes",
-    path: "",
-    node: <ShoppingBag color="primary"></ShoppingBag>,
+    path: "/orders",
+    icon: <ShoppingBag color="primary"></ShoppingBag>,
   },
 ];
 
@@ -38,15 +39,9 @@ const Aside = ({ width }: Props): JSX.Element => {
       anchor="left"
     >
       <Toolbar />
-      <Divider />
       <List>
-        {links.map((link, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>{link.node}</ListItemIcon>
-              <ListItemText primary={link.name}></ListItemText>
-            </ListItemButton>
-          </ListItem>
+        {links.map((link) => (
+          <ListItemLink key={link.name} icon={link.icon} primary={link.name} to={link.path} />
         ))}
       </List>
     </Drawer>

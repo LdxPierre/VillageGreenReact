@@ -3,21 +3,17 @@ import { PaginationInterface } from "../../../types";
 
 interface Props {
   pagination: PaginationInterface;
-  fetchProducts: (queryParams?: URLSearchParams) => void;
   page: number;
-  setPage: (page: number) => void;
+  updatePage: (number: number) => void;
   total: number;
 }
 
-const PaginationLinks = ({ pagination, fetchProducts, page, setPage, total }: Props): JSX.Element => {
+const PaginationLinks = ({ pagination, page, updatePage, total }: Props): JSX.Element => {
   const lastPage = Number(pagination["hydra:last"].charAt(pagination["hydra:last"].length - 1));
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
     if (value != page) {
-      const queryParams = new URLSearchParams();
-      queryParams.append("page", String(value));
-      fetchProducts(queryParams);
-      setPage(value);
+      updatePage(value);
     }
   };
 

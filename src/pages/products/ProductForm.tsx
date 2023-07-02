@@ -3,10 +3,10 @@ import { LoadingButton } from "@mui/lab";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ProductInterface } from "../../../types";
+import { ProductInterface } from "../../types";
 import { Save } from "@mui/icons-material";
-import { getProducts, newProduct } from "../../../apis";
-import { useFetchCategories } from "../../../hooks/useFetchCategories";
+import { getProducts, newProduct } from "../../apis";
+import { useFetchCategories } from "../../hooks/useFetchCategories";
 
 interface FormData {
   id?: number;
@@ -56,7 +56,7 @@ const schema = yup.object({
   stock: yup.number().typeError("Veuillez saisir un nombre").required("Veuillez saisir un stock"),
 });
 
-export const FormProduct = ({ submitValue = "Envoyer", product }: Props): JSX.Element => {
+const ProductForm = ({ submitValue = "Envoyer", product }: Props): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -160,3 +160,5 @@ export const FormProduct = ({ submitValue = "Envoyer", product }: Props): JSX.El
     </form>
   );
 };
+
+export default ProductForm;

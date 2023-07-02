@@ -1,28 +1,19 @@
 import { Button, SelectChangeEvent, Stack } from "@mui/material";
 import { Add } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
 import { CategoryInterface } from "../../../types";
 import MenuSelect from "./MenuSelect";
 
 interface Props {
   categories: CategoryInterface[] | undefined;
   selectCategories: CategoryInterface[];
-  setSelectCategories: (categoriesArray: CategoryInterface[]) => void;
-  fetchProducts: (queryParams?: URLSearchParams) => void;
-  setPage: (page: number) => void;
+  updateCategories: (index: number, id: number) => void;
 }
 
-const Menu = ({ categories, selectCategories, setSelectCategories, fetchProducts, setPage }: Props): JSX.Element => {
+const Menu = ({ categories, selectCategories, updateCategories }: Props): JSX.Element => {
   const handleChangeCategory = (e: SelectChangeEvent): void => {
-    const cat = categories!.find((c: CategoryInterface) => c.id === Number(e.target.value))!;
-    const selectNbr = Number(e.target.name.replace("category-", "")) - 1;
-    const newSelectCategories = [...selectCategories];
-    const queryParams = new URLSearchParams();
-    queryParams.append("category", String(cat.id));
-    newSelectCategories[selectNbr] = cat;
-    newSelectCategories.splice(selectNbr + 1);
-    cat.content === "products" ? fetchProducts(queryParams) : fetchProducts();
-    setSelectCategories(newSelectCategories);
-    setPage(1);
+    const index = Number(e.target.name.replace("category-", "")) - 1;
+    updateCategories(index, Number(e.target.value));
   };
 
   const inputsCategories = () => {
@@ -48,16 +39,14 @@ const Menu = ({ categories, selectCategories, setSelectCategories, fetchProducts
         selectCategories[i] && selectCategories[i].content === "categories" ? null : (i = 11);
       }
       return inputsArray;
-    } else {
-      return <p>Categories not found</p>;
     }
   };
 
   return (
-    <Stack spacing={2} sx={{ width: 220 }}>
+    <Stack spacing={2} sx={{ width: 220, left: 0, top: 0 }} position={"sticky"}>
       {inputsCategories()}
       {selectCategories.length > 0 && selectCategories[selectCategories.length - 1].content === "products" ? (
-        <Button variant="contained" startIcon={<Add />}>
+        <Button component={RouterLink} to={"/products/new"} variant="contained" startIcon={<Add />}>
           Ajouter un produit
         </Button>
       ) : null}

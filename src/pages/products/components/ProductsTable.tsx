@@ -16,12 +16,11 @@ import {
 interface Props {
   products: HydraCollectionInterface;
   page: number;
-  setPage: (page: number) => void;
-  fetchProducts: (queryParams?: URLSearchParams) => void;
+  updatePage: (number: number) => void;
   loading: boolean;
 }
 
-const ProductsList = ({ products, fetchProducts, page, setPage, loading }: Props): JSX.Element => {
+export const ProductsTable = ({ products, page, updatePage, loading }: Props): JSX.Element => {
   const pagination: PaginationInterface | null = products["hydra:view"];
   const total: number = products["hydra:totalItems"];
   const items: ProductInterface[] = products["hydra:member"];
@@ -29,13 +28,7 @@ const ProductsList = ({ products, fetchProducts, page, setPage, loading }: Props
   return (
     <>
       {pagination?.["hydra:last"] ? (
-        <PaginationLinks
-          pagination={pagination}
-          fetchProducts={fetchProducts}
-          page={page}
-          setPage={setPage}
-          total={total}
-        ></PaginationLinks>
+        <PaginationLinks pagination={pagination} page={page} updatePage={updatePage} total={total}></PaginationLinks>
       ) : null}
       {loading === false ? (
         <TableContainer component={Paper}>
@@ -76,16 +69,8 @@ const ProductsList = ({ products, fetchProducts, page, setPage, loading }: Props
         </Box>
       )}
       {pagination?.["hydra:last"] ? (
-        <PaginationLinks
-          pagination={pagination}
-          fetchProducts={fetchProducts}
-          page={page}
-          setPage={setPage}
-          total={total}
-        ></PaginationLinks>
+        <PaginationLinks pagination={pagination} page={page} updatePage={updatePage} total={total}></PaginationLinks>
       ) : null}
     </>
   );
 };
-
-export default ProductsList;
