@@ -1,10 +1,10 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import { productsListLoader } from "./services/loaders/productsLoader";
-import { productFormNewAction } from "./services/actions/productFormNewAction";
 import { getCategories, getProduct } from "./apis";
-import { productFormEditAction } from "./services/actions/productFormEditAction";
+import { Login } from "./pages/login/Login";
+import { loginAction, productFormEditAction, productFormNewAction } from "./services/actions";
+import { mainLoader, productsListLoader } from "./services/loaders";
 
 const Products = lazy(() => import("./pages/products/Products"));
 const ProductsList = lazy(() => import("./pages/products/ProductsList"));
@@ -15,6 +15,7 @@ export const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <App />,
+		loader: mainLoader,
 		children: [
 			{
 				path: "products",
@@ -54,5 +55,10 @@ export const router = createBrowserRouter([
 				element: <Orders />,
 			},
 		],
+	},
+	{
+		path: "/login",
+		element: <Login />,
+		action: loginAction,
 	},
 ]);
