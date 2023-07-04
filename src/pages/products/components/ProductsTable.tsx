@@ -1,6 +1,7 @@
 import PaginationLinks from "./PaginationsLinks";
 import { HydraCollectionInterface, ProductInterface, PaginationInterface } from "../../../types";
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 interface Props {
 	products: HydraCollectionInterface;
@@ -41,7 +42,7 @@ export const ProductsTable = ({ products, page, updatePage }: Props): JSX.Elemen
 								<TableCell align="right">{p.stock}</TableCell>
 								<TableCell align="right">{p.price}</TableCell>
 								<TableCell align="right">
-									<Button size="small" variant="contained">
+									<Button component={RouterLink} to={`edit/${p.id}`} size="small" variant="contained">
 										Afficher
 									</Button>
 								</TableCell>

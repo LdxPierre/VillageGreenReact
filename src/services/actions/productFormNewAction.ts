@@ -6,7 +6,7 @@ interface Param {
 	request: Request;
 }
 
-export const productFormAction = async ({ request }: Param): Promise<Response> => {
+export const productFormNewAction = async ({ request }: Param): Promise<Response> => {
 	const values = Object.fromEntries(await request.formData());
 	const url: string = `${values.brand} ${values.name}`.toLowerCase().replaceAll(" ", "-");
 	const newValues = { ...values, stock: Number(values.stock), url };

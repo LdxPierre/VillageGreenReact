@@ -1,18 +1,12 @@
 import { FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import * as yup from "yup";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ProductInterface } from "../../types";
+import * as yup from "yup";
+import { LoadingButton } from "@mui/lab";
 import { Save } from "@mui/icons-material";
+import { HydraCollectionInterface, ProductInterface } from "../../types";
 import { getProducts } from "../../apis";
-import { useFetchCategories } from "../../hooks/useFetchCategories";
-import { useSubmit } from "react-router-dom";
-
-interface Props {
-	submitValue?: string;
-	product?: ProductInterface;
-}
 
 const nameIsValid = async (name: string) => {
 	const queryParams = new URLSearchParams();
@@ -25,14 +19,22 @@ const nameIsValid = async (name: string) => {
 	}
 };
 
-const schema = yup.object({
-	name: yup
-		.string()
-		.min(5, "Le nom du produit doit comporter au moins 5 caractères")
-		.max(50, "Le nom du produit ne doit pas dépasser 50 caractères")
-		.matches(/^[a-zA-Z\d\- éèçàâêûîôäëÿüïö]*$/, "Le nom ne doit pas contenir de caractères spécial")
-		.required("Veuillez saisir un nom de produit")
-		.test("unique name", "Un produit du même nom existe déjà", (value) => nameIsValid(value)),
+const schemaNamePost = yup
+	.string()
+	.min(5, "Le nom du produit doit comporter au moins 5 caractères")
+	.max(50, "Le nom du produit ne doit pas dépasser 50 caractères")
+	.matches(/^[a-zA-Z\d\- éèçàâêûîôäëÿüïö.]*$/, "Le nom ne doit pas contenir de caractères spécial")
+	.required("Veuillez saisir un nom de produit")
+	.test("unique name", "Un produit du même nom existe déjà", (value) => nameIsValid(value));
+
+const schemaNamePatch = yup
+	.string()
+	.min(5, "Le nom du produit doit comporter au moins 5 caractères")
+	.max(50, "Le nom du produit ne doit pas dépasser 50 caractères")
+	.matches(/^[a-zA-Z\d\- éèçàâêûîôäëÿüïö.]*$/, "Le nom ne doit pas contenir de caractères spécial")
+	.required("Veuillez saisir un nom de produit");
+
+const schema = {
 	brand: yup
 		.string()
 		.min(5, "La marque du produit doit comporter au moins 5 caractères")
@@ -41,9 +43,13 @@ const schema = yup.object({
 	category: yup.string().required("Veuillez choisir une catégorie"),
 	price: yup.number().typeError("Veuillez saisir un nombre").required("Veuillez saisir un prix"),
 	stock: yup.number().typeError("Veuillez saisir un nombre").required("Veuillez saisir un stock"),
-});
+};
 
-const ProductForm = ({ submitValue = "Envoyer", product }: Props): JSX.Element => {
+const ProductForm = (): JSX.Element => {
+	const { product, categories } = useLoaderData() as {
+		product: ProductInterface;
+		categories: HydraCollectionInterface;
+	};
 	const {
 		register,
 		handleSubmit,
@@ -52,18 +58,22 @@ const ProductForm = ({ submitValue = "Envoyer", product }: Props): JSX.Element =
 		defaultValues: {
 			name: product?.name ?? "",
 			brand: product?.brand ?? "",
-			category: product ? String(product.category_id) : "",
 			stock: product?.stock ?? undefined,
 			price: product?.price ?? undefined,
 		},
-		resolver: yupResolver(schema),
+		resolver: yupResolver(
+			yup.object(product ? { ...schema, name: schemaNamePatch } : { ...schema, name: schemaNamePost })
+		),
 		reValidateMode: "onBlur",
 	});
-	const { categories } = useFetchCategories(new URLSearchParams("content=products"));
 	const submit = useSubmit();
 
 	const onSubmit = async (data: {}): Promise<void> => {
-		submit(data, { method: "post" });
+		if (product) {
+			submit({ ...data, id: product.id! }, { method: "patch" });
+		} else {
+			submit(data, { method: "post" });
+		}
 	};
 
 	return (
@@ -94,9 +104,14 @@ const ProductForm = ({ submitValue = "Envoyer", product }: Props): JSX.Element =
 				<Grid item xs={12} md={6}>
 					<FormControl error={errors.category ? true : false} fullWidth>
 						<InputLabel id="categoryLabel">Catégorie</InputLabel>
-						<Select {...register("category")} labelId="categoryLabel" id="category" label="category" defaultValue={""}>
+						<Select
+							{...register("category")}
+							labelId="categoryLabel"
+							id="category"
+							label="category"
+							defaultValue={product?.category?.["@id"] ?? ""}>
 							{categories?.["hydra:member"].map((c) => (
-								<MenuItem key={c.name} value={"api/categories/" + c.id}>
+								<MenuItem key={c.name} value={"/api/categories/" + c.id}>
 									{c.name}
 								</MenuItem>
 							))}
@@ -134,7 +149,7 @@ const ProductForm = ({ submitValue = "Envoyer", product }: Props): JSX.Element =
 						startIcon={<Save />}
 						variant="contained"
 						type="submit">
-						{submitValue}
+						{product ? "Modifier" : "Ajouter"}
 					</LoadingButton>
 				</Grid>
 			</Grid>

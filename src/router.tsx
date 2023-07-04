@@ -2,7 +2,9 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import { productsListLoader } from "./services/loaders/productsLoader";
-import { productFormAction } from "./services/actions/productFormAction";
+import { productFormNewAction } from "./services/actions/productFormNewAction";
+import { getCategories, getProduct } from "./apis";
+import { productFormEditAction } from "./services/actions/productFormEditAction";
 
 const Products = lazy(() => import("./pages/products/Products"));
 const ProductsList = lazy(() => import("./pages/products/ProductsList"));
@@ -26,7 +28,24 @@ export const router = createBrowserRouter([
 					{
 						path: "new",
 						element: <ProductForm />,
-						action: productFormAction,
+						loader: async () => {
+							const categories = await getCategories(new URLSearchParams("content=products"));
+							return { categories };
+						},
+						action: productFormNewAction,
+					},
+					{
+						path: "edit/:id",
+						element: <ProductForm />,
+						loader: async ({ params }) => {
+							const product = await getProduct(params.id!);
+							const categories = await getCategories(new URLSearchParams("content=products"));
+							return {
+								product,
+								categories,
+							};
+						},
+						action: productFormEditAction,
 					},
 				],
 			},
