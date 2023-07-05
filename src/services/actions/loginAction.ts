@@ -10,7 +10,7 @@ export const loginAction = async ({ request }: { request: Request }) => {
 			password: String(values.password),
 		});
 		if (res.status === 200 && res.resBody.token) {
-			setCookie("token", res.resBody.token);
+			setCookie("token", res.resBody.token, 1);
 			return redirect("/");
 		} else {
 			return res.resBody.message;

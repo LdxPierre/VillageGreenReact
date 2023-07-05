@@ -1,19 +1,16 @@
-export const setCookie = (name: string, value: string): void => {
-	const cookie = document.cookie;
-	const newCookie = `${name}=${value}`;
-	if (cookie === "") {
-		document.cookie = newCookie;
-	} else {
-		document.cookie = `${document.cookie}; ${newCookie}`;
-	}
-};
-
 export const getCookie = (name: string): string | null => {
-	const tokenString = document.cookie.split(";").find((e) => e.startsWith(`${name}=`));
-	const tokenValue = tokenString?.slice(tokenString.indexOf("=") + 1, tokenString.length);
-	if (tokenValue) {
-		return tokenValue;
+	const cookie = document.cookie.split(";").find((e) => e.startsWith(`${name}=`));
+	const cookieValue = cookie?.slice(cookie.indexOf("=") + 1, cookie.length);
+	if (cookieValue) {
+		return cookieValue;
 	} else {
 		return null;
 	}
+};
+
+export const setCookie = (name: string, value: string, exdays: number): void => {
+	const expDate = new Date();
+	expDate.setTime(expDate.getTime() + exdays * 24 * 60 * 60 * 1000);
+	const newCookie = `${name}=${value};expires=${expDate.toUTCString()};path=/`;
+	document.cookie = newCookie;
 };

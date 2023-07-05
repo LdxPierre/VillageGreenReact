@@ -4,7 +4,7 @@ import App from "./App";
 import { getCategories, getProduct } from "./apis";
 import { Login } from "./pages/login/Login";
 import { loginAction, productFormEditAction, productFormNewAction } from "./services/actions";
-import { mainLoader, productsListLoader } from "./services/loaders";
+import { logoutLoader, mainLoader, productsListLoader } from "./services/loaders";
 
 const Products = lazy(() => import("./pages/products/Products"));
 const ProductsList = lazy(() => import("./pages/products/ProductsList"));
@@ -60,5 +60,9 @@ export const router = createBrowserRouter([
 		path: "/login",
 		element: <Login />,
 		action: loginAction,
+	},
+	{
+		path: "/logout",
+		loader: logoutLoader,
 	},
 ]);
