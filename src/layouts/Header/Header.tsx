@@ -48,6 +48,11 @@ function Header({ title }: PropsInterface): JSX.Element {
 						open={Boolean(anchorElUser)}
 						onClose={handleCloseUserMenu}>
 						<MenuItem onClick={handleCloseUserMenu}>
+							<Link component={RouterLink} to={"/profile"} underline="none" sx={{ width: "100%" }}>
+								Profile
+							</Link>
+						</MenuItem>
+						<MenuItem onClick={handleCloseUserMenu}>
 							<Link component={RouterLink} to={"/logout"} underline="none">
 								Déconnexion
 							</Link>

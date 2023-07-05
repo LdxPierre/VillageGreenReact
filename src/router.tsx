@@ -5,6 +5,7 @@ import { getCategories, getProduct } from "./apis";
 import { Login } from "./pages/login/Login";
 import { loginAction, productFormEditAction, productFormNewAction } from "./services/actions";
 import { logoutLoader, mainLoader, productsListLoader } from "./services/loaders";
+import Profile from "./pages/profile/Profile";
 
 const Products = lazy(() => import("./pages/products/Products"));
 const ProductsList = lazy(() => import("./pages/products/ProductsList"));
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
 			{
 				path: "orders",
 				element: <Orders />,
+			},
+			{
+				path: "profile",
+				element: <Profile />,
 			},
 		],
 	},
