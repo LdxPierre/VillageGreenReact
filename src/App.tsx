@@ -16,7 +16,7 @@ function App() {
 			<CssBaseline />
 			<UserProvider>
 				<Box sx={{ display: "flex" }}>
-					<Header width={drawerWidth} title={title} />
+					<Header title={title} />
 					<Aside width={drawerWidth}></Aside>
 					<Box component={"main"} sx={{ flexGrow: 1, p: 3 }}>
 						<Toolbar />
