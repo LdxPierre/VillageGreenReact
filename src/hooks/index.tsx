@@ -1,1 +1,1 @@
-import { useFetchCategories } from "./useFetchCategories";
+export * from "./useFetchCategories";
