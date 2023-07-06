@@ -12,7 +12,7 @@ const schema = yup.object({
 	password: yup.string().required("Veuillez saisir votre mot de passe"),
 });
 
-export const Login = (): JSX.Element => {
+const Login = (): JSX.Element => {
 	const {
 		handleSubmit,
 		register,
@@ -79,3 +79,5 @@ export const Login = (): JSX.Element => {
 		</ThemeProvider>
 	);
 };
+
+export default Login;

@@ -2,15 +2,15 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import { getCategories, getProduct } from "./apis";
-import { Login } from "./pages/login/Login";
 import { loginAction, productFormEditAction, productFormNewAction } from "./services/actions";
 import { logoutLoader, mainLoader, productsListLoader } from "./services/loaders";
-import Profile from "./pages/profile/Profile";
 
+const Login = lazy(() => import("./pages/login/Login"));
 const Products = lazy(() => import("./pages/products/Products"));
 const ProductsList = lazy(() => import("./pages/products/ProductsList"));
 const ProductForm = lazy(() => import("./pages/products/ProductForm"));
 const Orders = lazy(() => import("./pages/order/Orders"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
 
 export const router = createBrowserRouter([
 	{
