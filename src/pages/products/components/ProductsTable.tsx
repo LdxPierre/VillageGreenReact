@@ -16,9 +16,7 @@ export const ProductsTable = ({ products, page, updatePage }: Props): JSX.Elemen
 
 	return (
 		<>
-			{pagination?.["hydra:last"] ? (
-				<PaginationLinks pagination={pagination} page={page} updatePage={updatePage} total={total}></PaginationLinks>
-			) : null}
+			<PaginationLinks pagination={pagination} page={page} updatePage={updatePage} total={total}></PaginationLinks>
 			<TableContainer component={Paper}>
 				<Table aria-label="Products">
 					<TableHead>

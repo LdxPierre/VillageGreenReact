@@ -1,19 +1,39 @@
-import { Button, SelectChangeEvent, Stack } from "@mui/material";
+import { Button, Divider, SelectChangeEvent, Stack, TextField, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import { CategoryInterface } from "../../../types";
 import MenuSelect from "./MenuSelect";
+import { MenuSelectSort } from "./MenuSelectSort";
+import { ChangeEvent } from "react";
 
 interface Props {
 	categories: CategoryInterface[] | undefined;
 	selectCategories: CategoryInterface[];
 	updateCategories: (index: number, id: number) => void;
+	params: URLSearchParams;
+	updateSearch: (value: string) => void;
+	updateSort: (value: string) => void;
 }
 
-const Menu = ({ categories, selectCategories, updateCategories }: Props): JSX.Element => {
+const Menu = ({
+	categories,
+	selectCategories,
+	updateCategories,
+	params,
+	updateSearch,
+	updateSort,
+}: Props): JSX.Element => {
 	const handleChangeCategory = (e: SelectChangeEvent): void => {
 		const index = Number(e.target.name.replace("category-", "")) - 1;
 		updateCategories(index, Number(e.target.value));
+	};
+
+	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+		updateSearch(e.target.value);
+	};
+
+	const handleChangeSort = (e: SelectChangeEvent) => {
+		updateSort(e.target.value);
 	};
 
 	const inputsCategories = () => {
@@ -43,10 +63,20 @@ const Menu = ({ categories, selectCategories, updateCategories }: Props): JSX.El
 	};
 
 	return (
-		<Stack spacing={2} sx={{ width: 220, left: 0, top: 0 }} position={"sticky"}>
+		<Stack spacing={2} sx={{ width: 220, minWidth: 220, left: 0, top: 0 }} position={"sticky"}>
 			<Button component={RouterLink} to={"/products/new"} variant="contained" startIcon={<Add />}>
 				Ajouter un produit
 			</Button>
+			<Divider />
+			<TextField id="search" label="Rechercher" defaultValue={params.get("name")} onChange={handleSearchChange} />
+			<Divider />
+			<MenuSelectSort
+				label={""}
+				selectSort={params.get("sort") ?? "idASC"}
+				name="sort"
+				handleChangeSort={handleChangeSort}
+			/>
+			<Divider />
 			{inputsCategories()}
 		</Stack>
 	);

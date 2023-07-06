@@ -1,51 +1,64 @@
-import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useSearchParams } from "react-router-dom";
 import { Box } from "@mui/material";
-import { getProducts } from "../../apis";
 import { CategoryInterface, HydraCollectionInterface } from "../../types";
 import Menu from "./components/Menu";
 import { ProductsTable } from "./components/ProductsTable";
 
+interface LoaderDataInterface {
+	categories: HydraCollectionInterface;
+	products: HydraCollectionInterface;
+	selectCategories: CategoryInterface[];
+	params: URLSearchParams;
+}
+
 const ProductsList = (): JSX.Element => {
-	const categories = useLoaderData() as HydraCollectionInterface;
-	const [selectCategories, setSelectCategories] = useState<CategoryInterface[]>([]);
-	const [products, setProducts] = useState<HydraCollectionInterface | null>(null);
-	const [page, setPage] = useState(1);
+	const { categories, products, selectCategories, params } = useLoaderData() as LoaderDataInterface;
+	const [searchParams, setSearchParams] = useSearchParams(params);
 
 	const updateCategories = (index: number, id: number): void => {
 		if (categories?.["hydra:member"]) {
-			const cat = categories["hydra:member"].find((c: CategoryInterface) => c.id === id)!;
-			const newSelectCategories = [...selectCategories];
-			const queryParams = new URLSearchParams(`category=${String(cat.id)}`);
-			newSelectCategories.splice(index + 1);
-			newSelectCategories[index] = cat;
-			cat.content === "products" ? fetchProducts(queryParams) : fetchProducts();
-			setSelectCategories(newSelectCategories);
-			setPage(1);
+			const oldSelectCategory = searchParams.getAll("selectCategory").splice(0, index);
+			searchParams.delete("page");
+			searchParams.delete("selectCategory");
+			oldSelectCategory.map((c) => searchParams.append("selectCategory", c));
+			searchParams.append("selectCategory", String(id));
+			setSearchParams(searchParams);
 		}
 	};
 
 	const updatePage = (number: number): void => {
-		fetchProducts(new URLSearchParams(`page=${number}`));
-		setPage(number);
+		setSearchParams((prev) => {
+			prev.set("page", String(number));
+			return prev;
+		});
 	};
 
-	const fetchProducts = async (queryParams?: URLSearchParams): Promise<void> => {
-		if (queryParams) {
-			setProducts(await getProducts(queryParams));
-		} else {
-			setProducts(null);
-		}
+	const updateSearch = (value: string): void => {
+		setSearchParams((prev) => {
+			prev.set("name", value);
+			return prev;
+		});
 	};
 
+	const updateSort = (value: string): void => {
+		setSearchParams((prev) => {
+			prev.set("sort", value);
+			return prev;
+		});
+	};
 	return (
 		<Box sx={{ display: "flex", gap: "24px" }} position={"relative"}>
 			<Menu
 				categories={categories?.["hydra:member"]}
 				selectCategories={selectCategories}
-				updateCategories={updateCategories}></Menu>
+				updateCategories={updateCategories}
+				params={searchParams}
+				updateSearch={updateSearch}
+				updateSort={updateSort}></Menu>
 			<Box sx={{ flexGrow: 1 }}>
-				{products && <ProductsTable products={products} page={page} updatePage={updatePage} />}
+				{products && (
+					<ProductsTable products={products} page={Number(searchParams.get("page") ?? 1)} updatePage={updatePage} />
+				)}
 			</Box>
 		</Box>
 	);
